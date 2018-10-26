@@ -11,6 +11,7 @@ MOD_PTRN="^\ [a-z]+[\.]{3}[a-z]"
 MSG_PTRN="-{3}message\ from\ [a-z0-9]+-{3}"
 ERR_PTRN="\*{3}error\ in\ [a-z0-9]+\*{3}"
 
+echo "<messages>"
 for file in "$@"
 do
   while IFS= read -r line
@@ -52,3 +53,4 @@ do
     oldline="$line"
   done < $file
 done
+echo "</messages>"
