@@ -31,10 +31,12 @@ heatr
 -21 -25 -26 0 /
 ${MAT} 4 0 0 0 0 /
 444 445 446 447 /
+gaspr
+-21 -26 -27
 moder
--26 27 /
+-27 28 /
 acer
--21 -26 0 51 52 /
+-21 -27 0 51 52 /
 1 0 1 .${NJOY_ACE_SUFF:-03} 0 /
 " " /
 ${MAT} ${NJOY_TEMP:-293.6} /
@@ -45,3 +47,5 @@ EOF
 
 ln -sfv $ENDF tape20
 ${TRAVIS_BUILD_DIR}/NJOY2016/bin/njoy < input
+[[ -s tape51 ]] && mv tape52 ${ENDF}.ace
+[[ -s tape28 ]] && mv tape28 ${ENDF}.pendf
