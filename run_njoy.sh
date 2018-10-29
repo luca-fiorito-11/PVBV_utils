@@ -47,5 +47,5 @@ EOF
 
 ln -sfv $ENDF tape20
 ${TRAVIS_BUILD_DIR}/NJOY2016/bin/njoy < input
-[[ -s tape51 ]] && mv tape52 ${ENDF}.ace
+[[ -s tape51 ]] && mv tape51 ${ENDF}.ace
 [[ -s tape28 ]] && mv tape28 ${ENDF}.pendf
