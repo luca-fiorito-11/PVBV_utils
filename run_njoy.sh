@@ -10,19 +10,19 @@ reconr
 -21 -22 /
 '' /
 ${MAT} 0 0 /
-${NJOY_TOLER:-0.1} 0. /
+${NJOY_TOLER:-0.001} 0. /
 0/
 broadr
 -21 -22 -23 /
 ${MAT} 1 0 0 0. /
-${NJOY_TOLER:-0.1} /
+${NJOY_TOLER:-0.001} /
 ${NJOY_TEMP:-293.6} /
 0/
 thermr
 0 -23 -24 /
 0 ${MAT} 20 1 1 0 0 1 221 0 /
 ${NJOY_TEMP:-293.6} /
-${NJOY_TOLER:-0.1} ${NJOY_EMAX:-10} /
+${NJOY_TOLER:-0.001} ${NJOY_EMAX:-10} /
 heatr
 -21 -24 -25 0 /
 ${MAT} 7 0 0 0 0 /
