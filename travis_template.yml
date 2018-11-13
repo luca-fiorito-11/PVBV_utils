@@ -1,0 +1,108 @@
+language: python
+env:
+  global:
+    - FILENAME=filename_placeholder
+python:
+  - "3.6"
+branches:
+  only: master
+jobs:
+  include:
+    - stage: utils
+      name: fizcon
+      install:
+        - curl -O "https://www-nds.iaea.org/public/endf/utility/bin/fizcon-linux-64"
+        - chmod 777 fizcon-linux-64
+      script:
+        - echo -e "$FILENAME\nFIZCON.OUT\n\nDONE" |./fizcon-linux-64
+    - stage: utils
+      name: checkr
+      install:
+        - curl -O "https://www-nds.iaea.org/public/endf/utility/bin/checkr-linux-64"
+        - chmod 777 checkr-linux-64
+      script:
+        - echo -e "$FILENAME\nCHECKR.OUT\n\nDONE" | ./checkr-linux-64
+    - stage: utils
+      name: psyche
+      install:
+        - curl -O "https://www-nds.iaea.org/public/endf/utility/bin/psyche-linux-64"
+        - chmod 777 psyche-linux-64
+      script:
+        - echo -e "$FILENAME\nPSYCHE.OUT\n\nDONE" | ./psyche-linux-64
+    - stage: utils
+      name: openmc
+      install:
+        - git clone https://github.com/luca-fiorito-11/PVBV_utils.git
+        - bash PVBV_utils/install_openmc.sh
+      script:
+        - export PYTHONPATH="openmc:${PYTHONPATH}"
+        - mkdir -p html
+        - python PVBV_utils/openmc_to_html.py $FILENAME > html/index.html
+        - "echo 'theme: jekyll-theme-cayman' > html/_config.yml"
+      deploy:
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GITHUB_TOKEN
+          keep-history: true
+          local-dir: html
+          overwrite: yes
+          on:
+            branch: master
+    - stage: processing
+      name: njoy
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - xsltproc
+      env:
+        - FC='gfortran-5'
+        - NJOY_TOLER=0.1   # Reconstruction tolerance
+        - NJOY_TEMP=293.6  # Processing temperature (K)
+        - NJOY_EMAX=10     # Maximum energy for thermal treatment (eV)
+        - NJOY_ACE_SUFF=03 # ACE file suffix
+      before_install:
+        - pip install "pandas>=0.23"
+      install:
+        - git clone https://github.com/luca-fiorito-11/PVBV_utils.git
+        - bash PVBV_utils/install_njoy.sh
+        - curl --verbose -O "https://www-nds.iaea.org/public/endf/utility/bin/inter-linux-64"
+        - chmod 777 inter-linux-64
+      script:
+        - bash PVBV_utils/run_njoy.sh $FILENAME
+        - echo -e "${FILENAME}.pendf\nINTER.OUT\n\nDONE" | ./inter-linux-64
+      after_success:
+        - mkdir -p html
+        - xsltproc PVBV_utils/njoy_to_html.xsl <( PVBV_utils/parse_njoy_messages.sh output ) | sed '1d;$d' > html/njoy_output.html
+        - python PVBV_utils/inter_to_html.py <(sed '1,/^Material number/d' INTER.OUT | sed '2d') > html/inter_output.html
+#        - mv PVBV_utils/index.html html/index.html
+        - git tag "$(date +'%Y%m%d')-$(git log --format=%h -1)-$(git log --format=%an -1 | tr " " "-")"
+      deploy:
+#        - provider: releases
+#          api-key: $GITHUB_TOKEN
+#          file:
+#            - ${FILENAME}.ace 
+#            - ${FILENAME}.pendf 
+#          skip_cleanup: true
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GITHUB_TOKEN
+          keep-history: true
+          local-dir: html
+          overwrite: yes
+          on:
+            branch: master
+#    - stage: inter
+#      sudo: required
+#      name: inter
+#      before_install:
+#        - TAG="$(date +'%Y%m%d')-$(date +'%H%M')-$(git log --format=%h -1)-$(git log --format=%an -1 | tr " " "-")"
+#        - REMOTE_URL=$(url=$(git ls-remote --get-url);echo ${url%.*})
+#        - curl --verbose -O "${REMOTE_URL}/releases/download/${TAG}/${FILENAME}.pendf"
+#      install:
+#        - curl --verbose -O "https://www-nds.iaea.org/public/endf/utility/bin/inter-linux-64"
+#        - chmod 777 inter-linux-64
+#      script:
+#        - echo -e "26-Fe-56g.jeff33.pendf\nINTER.OUT\n\nDONE" | ./inter-linux-64
