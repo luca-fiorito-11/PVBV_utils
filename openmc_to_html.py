@@ -15,7 +15,7 @@ name = info.pop("zsymam")
 
 df = pd.Series(info).rename(name.strip()).to_frame()
 
-table = df.to_html(escape=False)
+table = df.to_html(escape=False, justify="left")
 body = """---
 layout: default
 ---
