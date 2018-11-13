@@ -1,4 +1,5 @@
 import openmc
+import sys
 import pandas as pd
 
 EV = openmc.data.endf.Evaluation(sys.argv[1])
