@@ -21,7 +21,8 @@ git commit -m "clean publish branch"
 
 # Push to remote
 git checkout master
-git remote add origin https://github.com/luca-fiorito-11/${repo_name}.git
+curl -u 'luca-fiorito-11' https://api.github.com/user/repos -d "{\"name\":\"${repo_name}\"}"
+git remote add origin git@github.com:luca-fiorito-11/${repo_name}.git
 git push -u origin master
 git checkout gh-pages
 git push -u origin gh-pages
@@ -31,5 +32,6 @@ git checkout master
 git clone https://github.com/luca-fiorito-11/PVBV_utils.git
 sed "s/filename_placeholder/$filename/" <PVBV_utils/travis_template.yml >.travis.yml
 git add .travis.yml
-git commit --all -m "Add travis CI"
+git commit -m "add travis CI"
 git push origin master
+cd ..
