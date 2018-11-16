@@ -1,3 +1,5 @@
+sudo apt-get install gfortran-5 xsltproc
+
 # Download the source code
 git clone https://github.com/njoy/NJOY2016.git
 
