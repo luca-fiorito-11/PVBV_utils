@@ -1,4 +1,4 @@
-apt-get gfortran-5
+sudo apt-get install gfortran-5
 
 curl -O "https://www-nds.iaea.org/public/endf/utility/fortran/fizcon.f"
 ${FC} -o fizcon fizcon.f
