@@ -11,6 +11,14 @@ env:
     - NJOY_EMAX=10     # Maximum energy for thermal treatment (eV)
     - NJOY_ACE_SUFF=03 # ACE file suffix
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gfortran-5
+      - xsltproc
+
 python:
   - "3.6"
 
@@ -74,13 +82,6 @@ jobs:
 
     - stage: processing
       name: njoy
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gfortran-5
-            - xsltproc
       install: bash ${UTILS}/install_njoy.sh
       script: 
         - bash ${UTILS}/run_njoy.sh $FILENAME
