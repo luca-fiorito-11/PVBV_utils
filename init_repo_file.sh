@@ -21,8 +21,9 @@ git commit -m "clean publish branch"
 
 # Push to remote
 git checkout master
-curl -u 'luca-fiorito-11' https://api.github.com/user/repos -d "{\"name\":\"${repo_name}\"}"
-git remote add origin git@github.com:luca-fiorito-11/${repo_name}.git
+git config credential.helper store
+curl -i -d "{\"name\" : \"${repo_name}\"}" https://api.github.com/user/repos -k -u luca-fiorito-11
+git remote add origin https://github.com/luca-fiorito-11/${repo_name}.git
 git push -u origin master
 git checkout gh-pages
 git push -u origin gh-pages
