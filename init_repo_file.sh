@@ -16,6 +16,7 @@ git commit -m "Initial import"
 git checkout --orphan gh-pages
 rm -rf *
 git rm --cached *
+touch .keep
 git add --all .
 git commit -m "clean publish branch"
 
