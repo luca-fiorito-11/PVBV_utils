@@ -32,7 +32,7 @@ git checkout master
 
 # Include travis CD/CI
 git clone https://github.com/luca-fiorito-11/PVBV_utils.git
-sed "s/filename_placeholder/$filename/" <PVBV_utils/travis_template.yml >.travis.yml
+sed "s/filename_placeholder/$filename/" <PVBV_utils/travis_eval_template.yml >.travis.yml
 git add .travis.yml
 git commit -m "add travis CI"
 git push origin master
