@@ -1,2 +1,2 @@
-curl -O "https://www-nds.iaea.org/public/endf/utility/bin/psyche-linux-64"
-chmod 777 psyche-linux-64
+curl -O "https://www-nds.iaea.org/public/endf/utility/fortran/psyche.f"
+${FC} -o psyche psyche.f

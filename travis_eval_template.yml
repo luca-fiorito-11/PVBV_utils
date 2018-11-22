@@ -22,9 +22,6 @@ addons:
 python:
   - "3.6"
 
-before_install:
-  - pip install "pandas>=0.23"
-
 cache:
   directories:
     - ${CACHEDIR}
@@ -67,17 +64,17 @@ jobs:
     - stage: utils
       name: fizcon
       install: bash ${UTILS}/install_fizcon.sh
-      script: echo -e "$FILENAME\nFIZCON.OUT\n\nDONE" |./fizcon-linux-64
+      script: echo -e "$FILENAME\nFIZCON.OUT\n\nDONE" |./fizcon
 
     - stage: utils
       name: checkr
       install: bash ${UTILS}/install_checkr.sh
-      script: echo -e "$FILENAME\nCHECKR.OUT\n\nDONE" | ./checkr-linux-64
+      script: echo -e "$FILENAME\nCHECKR.OUT\n\nDONE" | ./checkr
 
     - stage: utils
       name: psyche
       install: bash ${UTILS}/install_psyche.sh
-      script: echo -e "$FILENAME\nPSYCHE.OUT\n\nDONE" | ./psyche-linux-64
+      script: echo -e "$FILENAME\nPSYCHE.OUT\n\nDONE" | ./psyche
 
 
     - stage: processing
@@ -87,14 +84,15 @@ jobs:
         - bash ${UTILS}/run_njoy.sh $FILENAME
         - mv ${FILENAME}.ace ${FILENAME}.pendf ${CACHEDIR}/
         - xsltproc ${UTILS}/njoy_to_html.xsl <( ${UTILS}/parse_njoy_messages.sh output ) | sed '1d;$d' > ${CACHEDIR}/html/njoy_output.html
-#        - git tag "$(date +'%Y%m%d')-$(git log --format=%h -1)-$(git log --format=%an -1 | tr " " "-")"
 
 
     - stage: inter
       name: inter
-      install: bash ${UTILS}/install_inter.sh
+      install: 
+        - bash ${UTILS}/install_inter.sh
+        - pip install pandas>=0.23
       script: 
-        - echo -e "${CACHEDIR}/${FILENAME}.pendf\nINTER.OUT\n\nDONE" | ./inter-linux-64
+        - echo -e "${CACHEDIR}/${FILENAME}.pendf\nINTER.OUT\n\nDONE" | ./inter
         - python ${UTILS}/inter_to_html.py <(sed '1,/^Material number/d' INTER.OUT | sed '2d') > ${CACHEDIR}/html/inter_output.html
 
 
@@ -104,7 +102,8 @@ jobs:
       deploy:
 
         - provider: releases
-          tags: true
+          on:
+            tags: true
           api-key: $GITHUB_TOKEN
           file:
             - ${CACHEDIR}/${FILENAME}.ace 
