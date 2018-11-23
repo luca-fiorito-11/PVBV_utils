@@ -22,6 +22,7 @@ stages:
   - ace
   - hdf5
   - run
+  - clean
 
 jobs:
   include:
@@ -45,7 +46,6 @@ jobs:
         - ( cd ${CACHEDIR} && git clone https://github.com/luca-fiorito-11/benchmarks.git )
         - ( cd ${UTILS} && ./install_openmc.sh )
         - mkdir -p ${UTILS}/openmc/build && cd ${UTILS}/openmc/build
-        - h5cc -showconfig
         - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
         - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
         - cmake -DCMAKE_CXX_COMPILER=$(which g++-5) ..
@@ -112,3 +112,133 @@ jobs:
         - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
         - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
         - ( cd ${CACHEDIR}/benchmarks/icsbep/pu-met-fast-002/openmc && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: pu-met-fast-006
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/pu-met-fast-006/openmc && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: pu-met-fast-008
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/pu-met-fast-008/openmc/case-1 && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: pu-met-fast-010
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/pu-met-fast-010/openmc && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: heu-met-fast-001-case-2
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/heu-met-fast-001/openmc/case-2 && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: heu-met-fast-002-case-1
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/heu-met-fast-002/openmc/case-1 && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: heu-met-fast-002-case-2
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/heu-met-fast-002/openmc/case-1 && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: run
+      name: heu-met-fast-003-case-1
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - gcc-5
+            - g++-5
+            - libhdf5-dev
+            - hdf5-tools
+      script:
+        - chmod 777 ${H5DIR}/*
+        - "export LD_LIBRARY_PATH=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - "export HDF5_ROOT=$(h5cc -showconfig | grep \"Installation point\" | cut -d: -f2 | xargs)"
+        - ( cd ${CACHEDIR}/benchmarks/icsbep/heu-met-fast-003/openmc/case-1 && ${UTILS}/openmc/build/bin/openmc )
+
+    - stage: clean
+      name: clean cache directory
+      script: rm -rf ${CACHEDIR}
