@@ -11,14 +11,6 @@ env:
     - NJOY_EMAX=10     # Maximum energy for thermal treatment (eV)
     - NJOY_ACE_SUFF=03 # ACE file suffix
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gfortran-5
-      - xsltproc
-
 python:
   - "3.6"
 
@@ -63,22 +55,47 @@ jobs:
 
     - stage: utils
       name: fizcon
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
       install: bash ${UTILS}/install_fizcon.sh
       script: echo -e "$FILENAME\nFIZCON.OUT\n\nDONE" |./fizcon
 
     - stage: utils
       name: checkr
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
       install: bash ${UTILS}/install_checkr.sh
       script: echo -e "$FILENAME\nCHECKR.OUT\n\nDONE" | ./checkr
 
     - stage: utils
       name: psyche
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
       install: bash ${UTILS}/install_psyche.sh
       script: echo -e "$FILENAME\nPSYCHE.OUT\n\nDONE" | ./psyche
 
 
     - stage: processing
       name: njoy
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran-5
+            - xsltproc
       install: bash ${UTILS}/install_njoy.sh
       script: 
         - bash ${UTILS}/run_njoy.sh $FILENAME
